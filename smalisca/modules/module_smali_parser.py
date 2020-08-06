@@ -385,8 +385,7 @@ class SmaliParser(ModuleBase):
         try:
             i = int(str(data), 0)
             return i
-        except Exception as e:
-            raise e
+        except:
             return None
 
     def extract_class_method(self, data):
