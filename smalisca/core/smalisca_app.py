@@ -84,7 +84,7 @@ class App:
         self.parser = parser
 
     def add_class_obj(self, class_obj):
-        """Adds a previsously created class object
+        """Adds a previously created class object
 
         Args:
             class_obj (dict): A dictionary containing info about class
@@ -120,6 +120,11 @@ class App:
         else:
             self.classes[classname]['const-strings'] = []
 
+        if class_obj['const-ints']:
+            self.classes[classname]['const-ints'] = class_obj['const-ints']
+        else:
+            self.classes[classname]['const-ints'] = []
+
     def add_property(self, classname, prop):
         """Adds a property to the application
 
@@ -141,6 +146,17 @@ class App:
         """
         if classname in self.classes:
             self.classes[classname]['const-strings'].append(const_string)
+
+    def add_const_int(self, classname, const_int):
+        """Adds a const integer to the application
+
+        Args:
+            classname (str): The class name the property belongs to
+            const-int (int): An integer to append
+
+        """
+        if classname in self.classes:
+            self.classes[classname]['const-ints'].append(const_int)
 
     def add_method(self, classname, method):
         """Adds a method to the application
@@ -210,6 +226,25 @@ class App:
                 data.append({
                     'name': cs['name'],
                     'value': cs['value'],
+                    'class': c
+                })
+
+        return data
+
+    def get_const_ints(self):
+        """Return const integers
+
+        Returns:
+            list: List of const integers, otherwise None
+
+        """
+        data = []
+        for c in self.classes.keys():
+            const_ints = self.classes[c]['const-ints']
+
+            for ci in const_ints:
+                data.append({
+                    'value': ci,
                     'class': c
                 })
 

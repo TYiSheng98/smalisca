@@ -102,6 +102,13 @@ class SmaliParser(ModuleBase):
                         c = self.extract_const_string(match_const_string)
                         current_class['const-strings'].append(c)
 
+                elif 'const' in l and '0x' in l:
+                    match_const_int = self.is_const_int(l)
+                    if match_const_int:
+                        c = self.extract_const_int(match_const_int)
+                        if c:
+                            current_class['const-ints'].append(c)
+
                 elif '.method' in l:
                     match_class_method = self.is_class_method(l)
                     if match_class_method:
@@ -212,6 +219,24 @@ class SmaliParser(ModuleBase):
         else:
             return None
 
+    def is_const_int(self, line):
+        """Check if line contains a const integer
+
+        Args:
+            line (str): Text line to be checked
+
+        Returns:
+            bool: True if line contains const int information,
+                  otherwise False
+
+        """
+        match = re.search("const\s+.*?\s+(?P<const>.*)", line)
+        if match:
+            log.debug("\t\tFound const-int: %s" % match.group('const'))
+            return match.group('const')
+        else:
+            return None
+
     def is_class_method(self, line):
         """Check if line contains a method definition
 
@@ -280,6 +305,9 @@ class SmaliParser(ModuleBase):
             # Const strings
             'const-strings': [],
 
+            # Const integers
+            'const-ints': [],
+
             # Methods
             'methods': []
         }
@@ -341,6 +369,24 @@ class SmaliParser(ModuleBase):
 
             return c
         else:
+            return None
+
+    def extract_const_int(self, data):
+        """Extract const integer
+
+        Args:
+            data (str): Data would be sth like: v0, 0xdeadbeef
+
+        Returns:
+            dict: Returns an integer, otherwise None
+
+        """
+
+        try:
+            i = int(str(data), 0)
+            return i
+        except Exception as e:
+            raise e
             return None
 
     def extract_class_method(self, data):
