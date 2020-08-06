@@ -44,6 +44,8 @@ version = version_file.read().strip()
 # GitHub download url
 github_url = "https://github.com/dorneanu/smalisca/archive/{0}.tar.gz".format(version)
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 def read(*filenames, **kwargs):
     encoding = kwargs.get('encoding', 'utf-8')
@@ -53,6 +55,7 @@ def read(*filenames, **kwargs):
         with io.open(os.path.join(here, filename), encoding=encoding) as f:
             buf.append(f.read())
     return sep.join(buf)
+
 
 # Get long description
 long_description = read('README.rst', 'CHANGELOG.rst')
@@ -69,17 +72,7 @@ setup(
     keywords='cli smali sca',
     license='MIT',
     packages=find_packages(exclude="bin"),
-    install_requires=[
-        'graphviz',
-        'cement',
-        'sqlalchemy',
-        'pyfiglet',
-        'prettytable',
-        'flask',
-        'Flask-SQLAlchemy',
-        'Flask-Restless',
-	'configparser'
-    ],
+    install_requires=requirements,
     classifiers=[
         'Programming Language :: Python',
         'Natural Language :: English',
