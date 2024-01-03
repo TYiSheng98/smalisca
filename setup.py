@@ -82,5 +82,5 @@ setup(
         'License :: OSI Approved :: MIT License'
     ],
     scripts=['bin/smalisca'],
-    data_files = [('smalisca/data/config/', ['smalisca/data/config/config.conf'])],
+    data_files = [('smalisca/data/config', ['smalisca/data/config/config.conf'])],
 )
